@@ -10,7 +10,7 @@ import org.springframework.util.backoff.FixedBackOff;
 
 @Slf4j
 @Configuration
-public class KafkaConfig {
+public class KafkaConsumerConfig {
 
     private static final String BLOCKING_RETRY_TERMINAL_MESSAGE = "Достигнут предел повторных попыток для сообщения: {}. Ошибка: {}";
 

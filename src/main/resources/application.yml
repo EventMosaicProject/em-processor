@@ -10,7 +10,7 @@ spring:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       acks: all                                                                               # Подтверждение всех реплик (все брокеры должны подтвердить запись сообщения)
       properties:
         enable.idempotence: true                                                              # Включаем идемпотентность (для предотвращения дублирования сообщений)
@@ -20,7 +20,7 @@ spring:
       group-id: ${spring.application.name}-group
       auto-offset-reset: earliest                                                             # Сброс на самый старый offset при отсутствии состояния группы
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         isolation.level: read_committed                                                       # Уровень изоляции для чтения (только подтвержденные изменения)
 
@@ -73,5 +73,9 @@ retry:
 # Топики Kafka
 kafka:
   topic:
-    parsed-data: ${KAFKA_TOPIC_PARSED_DATA:gdelt-parsed-data-topic}
-    processed-data: ${KAFKA_TOPIC_PROCESSED_DATA:gdelt-processed-data-topic}
+    consumer:
+      adapter-event: ${KAFKA_TOPIC_ADAPTER_EVENT:gdelt-adapter-event-topic}
+      adapter-mention: ${KAFKA_TOPIC_ADAPTER_MENTION:gdelt-adapter-mention-topic}
+    producer:
+      processor-event: ${KAFKA_TOPIC_PROCESSOR_EVENT:gdelt-processor-event-topic}
+      processor-mention: ${KAFKA_TOPIC_PROCESSOR_MENTION:gdelt-processor-mention-topic}
