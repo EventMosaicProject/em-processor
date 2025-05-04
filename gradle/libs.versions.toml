@@ -13,6 +13,9 @@ lombok = "1.18.38"
 # Тестирование
 testcontainers = "1.20.6"
 
+# EM Library
+emLibraryCommon = "0.0.1-SNAPSHOT"
+
 [libraries]
 # Spring Boot
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
@@ -40,6 +43,9 @@ testcontainers-core = { module = "org.testcontainers:testcontainers", version.re
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
 testcontainers-kafka = { module = "org.testcontainers:kafka", version.ref = "testcontainers" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+
+# EM Library
+em-library-common = { module = "com.neighbor.eventmosaic.library:em-library-common", version.ref = "emLibraryCommon" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }

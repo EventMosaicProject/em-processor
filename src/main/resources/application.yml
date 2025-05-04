@@ -23,6 +23,7 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         isolation.level: read_committed                                                       # Уровень изоляции для чтения (только подтвержденные изменения)
+        spring.json.trusted.packages: com.neighbor.eventmosaic.library.common.dto             # Доверенные пакеты для десериализации
 
 
 server:
@@ -79,3 +80,8 @@ kafka:
     producer:
       processor-event: ${KAFKA_TOPIC_PROCESSOR_EVENT:gdelt-processor-event-topic}
       processor-mention: ${KAFKA_TOPIC_PROCESSOR_MENTION:gdelt-processor-mention-topic}
+
+# Настройки обработки батчей
+batch:
+  processing:
+    window-duration-ms: ${BATCH_PROCESSING_WINDOW_MS:60000}                                     # Время ожидания батча (1 минута по умолчанию)

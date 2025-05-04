@@ -51,6 +51,9 @@ dependencies {
 	testImplementation(libs.testcontainers.junit)
 	testImplementation(libs.testcontainers.kafka)
 	testRuntimeOnly(libs.junit.platform.launcher)
+
+	// EM Library
+	implementation(libs.em.library.common)
 }
 
 dependencyManagement {
