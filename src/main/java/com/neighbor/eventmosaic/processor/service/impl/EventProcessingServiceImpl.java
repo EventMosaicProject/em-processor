@@ -6,6 +6,8 @@ import com.neighbor.eventmosaic.library.common.dto.Event;
 import com.neighbor.eventmosaic.library.common.dto.Mention;
 import com.neighbor.eventmosaic.processor.component.BatchProcessor;
 import com.neighbor.eventmosaic.processor.dto.BatchData;
+import com.neighbor.eventmosaic.processor.exception.RedisOperationException;
+import com.neighbor.eventmosaic.processor.exception.RedisSerializationException;
 import com.neighbor.eventmosaic.processor.service.EventProcessingService;
 import com.neighbor.eventmosaic.processor.util.RedisKeysUtil;
 import lombok.RequiredArgsConstructor;
@@ -141,8 +143,13 @@ public class EventProcessingServiceImpl implements EventProcessingService {
             String json = objectMapper.writeValueAsString(object);
             redisTemplate.opsForValue().set(key, json);
             redisTemplate.expire(key, getEffectiveTtl());
+
         } catch (JsonProcessingException e) {
             log.error("Ошибка сериализации объекта {}: {}", object, e.getMessage(), e);
+            throw new RedisSerializationException("Ошибка сериализации объекта для Redis", e);
+        } catch (Exception e) {
+            log.error("Ошибка сохранения в Redis для ключа {}: {}", key, e.getMessage(), e);
+            throw new RedisOperationException("Ошибка сохранения объекта в Redis", e);
         }
     }
 
