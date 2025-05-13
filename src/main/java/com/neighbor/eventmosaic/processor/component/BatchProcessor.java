@@ -8,8 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -20,27 +18,10 @@ public class BatchProcessor {
                              List<Mention> mentions) {
 
         try {
-            // TODO: добавить логику обработки данных, например, фильтрация, агрегация и тд.
+            // При необходимости добавить логику обработки данных, например, фильтрация, агрегация и тд.
+            // Упоминания могут содержать идентификатор события которого нет в файле событий текущего батча
 
-            // Фильтрация событий (например только события с определённым условием)
-            List<Event> filteredEvents = events.stream()
-                    .filter(event -> event.getGlobalEventId() != null)
-                    .toList();
-
-            // Собираем ID оставшихся событий
-            Set<Long> validEventIds = filteredEvents.stream()
-                    .map(Event::getGlobalEventId)
-                    .collect(Collectors.toSet());
-
-            // Фильтрация упоминаний: только те, что ссылаются на оставшиеся события
-            List<Mention> filteredMentions = mentions.stream()
-                    .filter(mention -> validEventIds.contains(mention.getGlobalEventId()))
-                    .toList();
-
-            log.info("Обработка батча: {} событий, {} упоминаний после фильтрации",
-                    filteredEvents.size(), filteredMentions.size());
-
-            return new BatchData(filteredEvents, filteredMentions);
+            return new BatchData(events, mentions);
 
         } catch (Exception e) {
             log.error("Ошибка при обработке батча: {}", e.getMessage(), e);
