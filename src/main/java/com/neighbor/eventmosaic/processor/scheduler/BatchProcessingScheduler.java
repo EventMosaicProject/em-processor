@@ -95,9 +95,9 @@ public class BatchProcessingScheduler {
     private CompletableFuture<Void> sendEvents(BatchData batchData) {
 
         return CompletableFuture.allOf(batchData.getEvents().stream()
-                .map(event -> kafkaMessagePublisher.sendEvent(
-                        event,
-                        String.valueOf(event.getGlobalEventId())))
+                .map(elasticEvent -> kafkaMessagePublisher.sendEvent(
+                        elasticEvent,
+                        String.valueOf(elasticEvent.getGlobalEventId())))
                 .toArray(CompletableFuture[]::new));
     }
 
@@ -111,9 +111,9 @@ public class BatchProcessingScheduler {
     private CompletableFuture<Void> sendMentions(BatchData batchData) {
 
         return CompletableFuture.allOf(batchData.getMentions().stream()
-                .map(mention -> kafkaMessagePublisher.sendMention(
-                        mention,
-                        mention.getGlobalEventId() + "_" + mention.getMentionIdentifier()))
+                .map(elasticMention -> kafkaMessagePublisher.sendMention(
+                        elasticMention,
+                        elasticMention.getGlobalEventId() + "_" + elasticMention.getMentionIdentifier()))
                 .toArray(CompletableFuture[]::new));
     }
 }

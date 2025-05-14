@@ -4,6 +4,8 @@ import com.neighbor.eventmosaic.library.common.dto.Event;
 import com.neighbor.eventmosaic.library.common.dto.Mention;
 import com.neighbor.eventmosaic.processor.component.RedisBatchCleaner;
 import com.neighbor.eventmosaic.processor.dto.BatchData;
+import com.neighbor.eventmosaic.processor.dto.ElasticEvent;
+import com.neighbor.eventmosaic.processor.dto.ElasticMention;
 import com.neighbor.eventmosaic.processor.publisher.KafkaMessagePublisher;
 import com.neighbor.eventmosaic.processor.service.BatchStateService;
 import com.neighbor.eventmosaic.processor.service.EventProcessingService;
@@ -63,8 +65,8 @@ class BatchProcessingSchedulerTest implements RedisTestContainerInitializer, Kaf
     private static final Long TEST_EVENT_ID = 123456L;
     private static final String TEST_MENTION_ID = "789012";
 
-    private Event testEvent;
-    private Mention testMention;
+    private ElasticEvent testEvent;
+    private ElasticMention testMention;
     private BatchData testBatchData;
 
     @BeforeEach
@@ -75,10 +77,10 @@ class BatchProcessingSchedulerTest implements RedisTestContainerInitializer, Kaf
                 .serverCommands()
                 .flushDb();
 
-        testEvent = new Event();
+        testEvent = new ElasticEvent();
         testEvent.setGlobalEventId(TEST_EVENT_ID);
 
-        testMention = new Mention();
+        testMention = new ElasticMention();
         testMention.setGlobalEventId(TEST_EVENT_ID);
         testMention.setMentionIdentifier(TEST_MENTION_ID);
 
@@ -140,10 +142,10 @@ class BatchProcessingSchedulerTest implements RedisTestContainerInitializer, Kaf
         var futureResult = CompletableFuture.completedFuture(mock(SendResult.class));
         doReturn(futureResult)
                 .when(kafkaMessagePublisher)
-                .sendEvent(any(Event.class), anyString());
+                .sendEvent(any(ElasticEvent.class), anyString());
         doReturn(futureResult)
                 .when(kafkaMessagePublisher)
-                .sendMention(any(Mention.class), anyString());
+                .sendMention(any(ElasticMention.class), anyString());
 
         // Act
         scheduler.processBatchIfReady();
@@ -197,12 +199,12 @@ class BatchProcessingSchedulerTest implements RedisTestContainerInitializer, Kaf
         failedFuture.completeExceptionally(new RuntimeException("Ошибка отправки в Kafka"));
         doReturn(failedFuture)
                 .when(kafkaMessagePublisher)
-                .sendEvent(any(Event.class), anyString());
+                .sendEvent(any(ElasticEvent.class), anyString());
 
         var successFuture = CompletableFuture.completedFuture(mock(SendResult.class));
         doReturn(successFuture)
                 .when(kafkaMessagePublisher)
-                .sendMention(any(Mention.class), anyString());
+                .sendMention(any(ElasticMention.class), anyString());
 
         // Act
         scheduler.processBatchIfReady();

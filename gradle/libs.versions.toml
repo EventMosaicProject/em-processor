@@ -10,6 +10,9 @@ logstashLogback = "8.0"
 # Lombok
 lombok = "1.18.38"
 
+# MapStruct
+mapstruct = "1.6.3"
+
 # Тестирование
 testcontainers = "1.20.6"
 
@@ -37,6 +40,10 @@ logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-enc
 
 # Lombok
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+# MapStruct
+mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
+mapstructProcessor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
 
 # Testcontainers
 testcontainers-core = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }

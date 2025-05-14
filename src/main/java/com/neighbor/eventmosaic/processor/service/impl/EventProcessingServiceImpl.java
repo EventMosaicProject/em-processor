@@ -6,8 +6,12 @@ import com.neighbor.eventmosaic.library.common.dto.Event;
 import com.neighbor.eventmosaic.library.common.dto.Mention;
 import com.neighbor.eventmosaic.processor.component.BatchProcessor;
 import com.neighbor.eventmosaic.processor.dto.BatchData;
+import com.neighbor.eventmosaic.processor.dto.ElasticEvent;
+import com.neighbor.eventmosaic.processor.dto.ElasticMention;
 import com.neighbor.eventmosaic.processor.exception.RedisOperationException;
 import com.neighbor.eventmosaic.processor.exception.RedisSerializationException;
+import com.neighbor.eventmosaic.processor.mapper.EventMapper;
+import com.neighbor.eventmosaic.processor.mapper.MentionMapper;
 import com.neighbor.eventmosaic.processor.service.EventProcessingService;
 import com.neighbor.eventmosaic.processor.util.RedisKeysUtil;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +41,8 @@ public class EventProcessingServiceImpl implements EventProcessingService {
     private final RedisTemplate<String, String> redisTemplate;
     private final ObjectMapper objectMapper;
     private final BatchProcessor batchProcessor;
+    private final EventMapper eventMapper;
+    private final MentionMapper mentionMapper;
 
     @Value("${batch.processing.window-duration-ms:60000}")
     private long batchWindowDurationMs;
@@ -101,9 +107,13 @@ public class EventProcessingServiceImpl implements EventProcessingService {
 
         log.info("Батч {} содержит {} событий и {} упоминаний", batchId, events.size(), mentions.size());
 
-        BatchData processed = batchProcessor.process(events, mentions);
+        List<ElasticEvent> elasticEvents = eventMapper.toElasticEvents(events);
+        List<ElasticMention> elasticMentions = mentionMapper.toElasticMentionList(mentions);
 
-        return new BatchData(processed.getEvents(), processed.getMentions());
+        log.info("Смаплено в {} ElasticEvent и {} ElasticMention для батча {}",
+                elasticEvents.size(), elasticMentions.size(), batchId);
+
+        return batchProcessor.process(elasticEvents, elasticMentions);
     }
 
     /**
