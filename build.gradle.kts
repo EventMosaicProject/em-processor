@@ -44,6 +44,10 @@ dependencies {
 	compileOnly(libs.lombok)
 	annotationProcessor(libs.lombok)
 
+	// MapStruct
+	implementation(libs.mapstruct)
+	annotationProcessor(libs.mapstructProcessor)
+
 	// Test
 	testImplementation(libs.spring.boot.starter.test)
 	testImplementation(libs.spring.kafka.test)

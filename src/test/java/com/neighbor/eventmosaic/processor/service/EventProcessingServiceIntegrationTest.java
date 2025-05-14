@@ -6,8 +6,12 @@ import com.neighbor.eventmosaic.library.common.dto.Event;
 import com.neighbor.eventmosaic.library.common.dto.Mention;
 import com.neighbor.eventmosaic.processor.component.BatchProcessor;
 import com.neighbor.eventmosaic.processor.dto.BatchData;
+import com.neighbor.eventmosaic.processor.dto.ElasticEvent;
+import com.neighbor.eventmosaic.processor.dto.ElasticMention;
 import com.neighbor.eventmosaic.processor.exception.RedisOperationException;
 import com.neighbor.eventmosaic.processor.exception.RedisSerializationException;
+import com.neighbor.eventmosaic.processor.mapper.EventMapper;
+import com.neighbor.eventmosaic.processor.mapper.MentionMapper;
 import com.neighbor.eventmosaic.processor.testcontainer.RedisTestContainerInitializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,6 +44,12 @@ class EventProcessingServiceIntegrationTest implements RedisTestContainerInitial
 
     @Autowired
     private EventProcessingService eventProcessingService;
+
+    @Autowired
+    EventMapper eventMapper;
+
+    @Autowired
+    MentionMapper mentionMapper;
 
     @MockitoSpyBean
     private RedisTemplate<String, String> redisTemplate;
@@ -155,8 +165,8 @@ class EventProcessingServiceIntegrationTest implements RedisTestContainerInitial
         eventProcessingService.storeEvent(TEST_BATCH_ID, event);
         eventProcessingService.storeMention(TEST_BATCH_ID, mention);
 
-        List<Event> expectedEvents = List.of(event);
-        List<Mention> expectedMentions = List.of(mention);
+        List<ElasticEvent> expectedEvents = eventMapper.toElasticEvents(List.of(event));
+        List<ElasticMention> expectedMentions = mentionMapper.toElasticMentionList(List.of(mention));
         BatchData expectedResult = new BatchData(expectedEvents, expectedMentions);
 
         doReturn(expectedResult).when(batchProcessor).process(any(), any());
