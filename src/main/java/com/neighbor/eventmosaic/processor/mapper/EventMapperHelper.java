@@ -1,5 +1,7 @@
 package com.neighbor.eventmosaic.processor.mapper;
 
+import com.neighbor.eventmosaic.library.common.dto.Event;
+import com.neighbor.eventmosaic.processor.dto.GeoPoint;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,51 @@ import java.time.format.DateTimeParseException;
 @Slf4j
 @Component
 public class EventMapperHelper {
+
+    /**
+     * Преобразует объект Event в GeoPoint для actor1, actor2 и action.
+     * Если координаты не заданы, возвращает null.
+     *
+     * @param event объект события
+     * @return GeoPoint с координатами или null
+     */
+    @Named("actor1ToGeoPoint")
+    public GeoPoint actor1ToGeoPoint(Event event) {
+        if (event.getActor1GeoLat() != null && event.getActor1GeoLong() != null) {
+            return new GeoPoint(event.getActor1GeoLat(), event.getActor1GeoLong());
+        }
+        return null;
+    }
+
+    /**
+     * Преобразует объект Event в GeoPoint для actor2.
+     * Если координаты не заданы, возвращает null.
+     *
+     * @param event объект события
+     * @return GeoPoint с координатами или null
+     */
+    @Named("actor2ToGeoPoint")
+    public GeoPoint actor2ToGeoPoint(Event event) {
+        if (event.getActor2GeoLat() != null && event.getActor2GeoLong() != null) {
+            return new GeoPoint(event.getActor2GeoLat(), event.getActor2GeoLong());
+        }
+        return null;
+    }
+
+    /**
+     * Преобразует объект Event в GeoPoint для action.
+     * Если координаты не заданы, возвращает null.
+     *
+     * @param event объект события
+     * @return GeoPoint с координатами или null
+     */
+    @Named("actionToGeoPoint")
+    public GeoPoint actionToGeoPoint(Event event) {
+        if (event.getActionGeoLat() != null && event.getActionGeoLong() != null) {
+            return new GeoPoint(event.getActionGeoLat(), event.getActionGeoLong());
+        }
+        return null;
+    }
 
     /**
      * Преобразует целое число в строку в формате "YYYY-MM-DD".
