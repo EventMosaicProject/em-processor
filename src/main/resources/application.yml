@@ -93,8 +93,14 @@ kafka:
       processor-event: ${KAFKA_TOPIC_PROCESSOR_EVENT:gdelt-processor-event-topic}
       processor-mention: ${KAFKA_TOPIC_PROCESSOR_MENTION:gdelt-processor-mention-topic}
     dlq-connect:
-      event: ${KAFKA_TOPIC_DLQ_CONNECT_EVENT:dlq-gdelt-event-topic}
-      mention: ${KAFKA_TOPIC_DLQ_CONNECT_MENTION:dlq-gdelt-mention-topic}
+      event:
+        name: ${KAFKA_TOPIC_DLQ_CONNECT_EVENT_NAME:dlq-gdelt-event-topic}
+        partitions: ${KAFKA_TOPIC_DLQ_CONNECT_EVENT_PARTITIONS:3}
+        replicas: ${KAFKA_TOPIC_DLQ_CONNECT_EVENT_REPLICAS:1}
+      mention:
+        name: ${KAFKA_TOPIC_DLQ_CONNECT_MENTION_NAME:dlq-gdelt-mention-topic}
+        partitions: ${KAFKA_TOPIC_DLQ_CONNECT_MENTION_PARTITIONS:3}
+        replicas: ${KAFKA_TOPIC_DLQ_CONNECT_MENTION_REPLICAS:1}
 
 # Настройки обработки батчей
 batch:
