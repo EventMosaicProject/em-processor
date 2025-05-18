@@ -205,14 +205,9 @@ public class ElasticEvent {
     private String actor1GeoAdm2Code;
 
     /**
-     * Широта географического объекта Actor1
+     * Географическая точка Actor1
      */
-    private Double actor1GeoLat;
-
-    /**
-     * Долгота географического объекта Actor1
-     */
-    private Double actor1GeoLong;
+    private GeoPoint actor1Location;
 
     /**
      * Идентификатор географического объекта Actor1
@@ -245,14 +240,9 @@ public class ElasticEvent {
     private String actor2GeoAdm2Code;
 
     /**
-     * Широта географического объекта Actor2
+     * Географическая точка Actor2
      */
-    private Double actor2GeoLat;
-
-    /**
-     * Долгота географического объекта Actor2
-     */
-    private Double actor2GeoLong;
+    private GeoPoint actor2Location;
 
     /**
      * Идентификатор географического объекта Actor2
@@ -285,14 +275,9 @@ public class ElasticEvent {
     private String actionGeoAdm2Code;
 
     /**
-     * Широта географического объекта действия
+     * Географическая точка действия
      */
-    private Double actionGeoLat;
-
-    /**
-     * Долгота географического объекта действия
-     */
-    private Double actionGeoLong;
+    private GeoPoint actionLocation;
 
     /**
      * Идентификатор географического объекта действия

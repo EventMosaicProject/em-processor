@@ -92,6 +92,9 @@ kafka:
     producer:
       processor-event: ${KAFKA_TOPIC_PROCESSOR_EVENT:gdelt-processor-event-topic}
       processor-mention: ${KAFKA_TOPIC_PROCESSOR_MENTION:gdelt-processor-mention-topic}
+    dlq-connect:
+      event: ${KAFKA_TOPIC_DLQ_CONNECT_EVENT:dlq-gdelt-event-topic}
+      mention: ${KAFKA_TOPIC_DLQ_CONNECT_MENTION:dlq-gdelt-mention-topic}
 
 # Настройки обработки батчей
 batch:

@@ -10,6 +10,9 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = EventMapperHelper.class)
 public interface EventMapper {
 
+    @Mapping(target = "actor1Location", source = "event", qualifiedByName = "actor1ToGeoPoint")
+    @Mapping(target = "actor2Location", source = "event", qualifiedByName = "actor2ToGeoPoint")
+    @Mapping(target = "actionLocation", source = "event", qualifiedByName = "actionToGeoPoint")
     @Mapping(target = "elasticIndexDate", source = "day", qualifiedByName = "integerToElasticIndexDateString")
     @Mapping(target = "eventDate", source = "day", qualifiedByName = "integerToOffsetDate")
     @Mapping(target = "dateAdded", source = "dateAdded", qualifiedByName = "longToOffsetDateTime")
